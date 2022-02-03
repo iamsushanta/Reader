@@ -12,11 +12,13 @@ import com.google.firebase.auth.FirebaseUser
 import iamzen.`in`.reader.daos.UserDao
 import iamzen.`in`.reader.model.User
 import kotlinx.android.synthetic.main.activity_signup.*
+import kotlinx.coroutines.DelicateCoroutinesApi
+import java.lang.Exception
 
-private const val TAG = "SigningActivity"
+private const val TAG = "SignupActivity"
 
+@DelicateCoroutinesApi
 class SignupActivity : AppCompatActivity() {
-    lateinit var emailLink:String
     lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,14 +27,14 @@ class SignupActivity : AppCompatActivity() {
 
 
 
-        signup_complete.setOnClickListener{
+        Signup_complete.setOnClickListener{
             if(Signup_email.text.isNotEmpty() && Signup_password.text.isNotEmpty()){
 
-                userEmailCheck(Signup_email.text.toString(),Signup_password.text.toString())
+                signUpEmailCheck(Signup_email.text.toString(),Signup_password.text.toString())
                 Signup_email.visibility = View.GONE
                 Signup_password.visibility = View.GONE
                 Signup_app_name.visibility = View.GONE
-                signup_complete.visibility = View.GONE
+                Signup_complete.visibility = View.GONE
                 Signup_progressBar.visibility = View.VISIBLE
                 Signup_alert.visibility = View.GONE
             }
@@ -48,7 +50,13 @@ class SignupActivity : AppCompatActivity() {
 
     }
 
-    private fun userEmailCheck(email:String,password:String){
+    override fun onStart() {
+        super.onStart()
+        val currentUser = auth.currentUser
+        updateUI(currentUser)
+    }
+
+    private fun signUpEmailCheck(email:String, password:String){
 
 
         auth.createUserWithEmailAndPassword(email, password)
@@ -60,10 +68,17 @@ class SignupActivity : AppCompatActivity() {
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
+
                     Toast.makeText(baseContext, "Authentication failed.",
                         Toast.LENGTH_SHORT).show()
-                    updateUI(null)
+                    try {
+                        throw task.exception!!
+                    } catch (e: Exception) {
+                        Log.e(TAG, e.message!!)
+                        Signup_alert.text = e.message
+                        updateUI(null)
+                    }
+
                 }
             }
 
@@ -85,7 +100,7 @@ class SignupActivity : AppCompatActivity() {
             Signup_email.visibility = View.VISIBLE
             Signup_password.visibility = View.VISIBLE
             Signup_app_name.visibility = View.VISIBLE
-            signup_complete.visibility = View.VISIBLE
+            Signup_complete.visibility = View.VISIBLE
             Signup_progressBar.visibility = View.GONE
             Signup_alert.visibility = View.VISIBLE
 
