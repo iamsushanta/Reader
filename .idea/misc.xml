@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/layout/activity_siging.xml" value="0.15896739130434784" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/layout/activity_signinig.xml" value="0.16530797101449277" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/layout/activity_signup.xml" value="0.176" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
