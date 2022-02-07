@@ -43,11 +43,19 @@ class SigningActivity : AppCompatActivity() {
                 Signing_password.visibility = View.GONE
                 Signing_app_name.visibility = View.GONE
                 Signing_complete.visibility = View.GONE
+                Signing_forgot_password.visibility = View.GONE
                 Signing_progressBar.visibility = View.VISIBLE
                 Signing_alert.visibility = View.GONE
             }
         }
+        
+        Signing_forgot_password.setOnClickListener{
+            val intent = Intent(this,ForgotPassword::class.java)
+            startActivity(intent)
+        }
     }
+
+
 
     private fun userEmailSigningEmail(email:String,password:String){
 
@@ -93,6 +101,7 @@ class SigningActivity : AppCompatActivity() {
             Signing_complete.visibility = View.VISIBLE
             Signing_progressBar.visibility = View.GONE
             Signing_alert.visibility = View.VISIBLE
+            Signing_forgot_password.visibility = View.VISIBLE
         }
     }
 }

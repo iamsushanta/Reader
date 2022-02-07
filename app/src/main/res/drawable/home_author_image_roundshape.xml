@@ -1,0 +1,8 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:shape="rectangle"
+    android:clipToOutline="true"
+    tools:targetApi="s">
+    <corners android:radius="10dp" />
+
+</shape>

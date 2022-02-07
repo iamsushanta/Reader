@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="home" />
+    <item
+        android:id="@+id/nav_love"
+        android:icon="@drawable/ic_love"
+        android:title="love" />
+    <item
+        android:id="@+id/nav_note"
+        android:icon="@drawable/ic_note"
+        android:title="note"
+         />
+    <item android:id="@+id/nav_addFolder"
+        android:title="Add Folder"
+        android:icon="@drawable/ic_add_article"
+        />
+</menu>

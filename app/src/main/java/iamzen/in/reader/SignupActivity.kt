@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import iamzen.`in`.reader.daos.UserDao
@@ -14,22 +16,27 @@ import iamzen.`in`.reader.model.User
 import kotlinx.android.synthetic.main.activity_signup.*
 import kotlinx.coroutines.DelicateCoroutinesApi
 import java.lang.Exception
+import com.google.firebase.auth.ActionCodeSettings
+import com.google.firebase.auth.AuthResult
+import java.util.*
+
 
 private const val TAG = "SignupActivity"
 
 @DelicateCoroutinesApi
 class SignupActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
+
+    // passwordless code
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
         auth = FirebaseAuth.getInstance()
 
 
-
         Signup_complete.setOnClickListener{
             if(Signup_email.text.isNotEmpty() && Signup_password.text.isNotEmpty()){
-
                 signUpEmailCheck(Signup_email.text.toString(),Signup_password.text.toString())
                 Signup_email.visibility = View.GONE
                 Signup_password.visibility = View.GONE
@@ -49,6 +56,9 @@ class SignupActivity : AppCompatActivity() {
 
 
     }
+
+
+
 
     override fun onStart() {
         super.onStart()

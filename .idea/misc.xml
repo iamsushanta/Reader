@@ -3,9 +3,29 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/layout/activity_siging.xml" value="0.136" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/drawable-v24/ic_home_tab.xml" value="0.2598958333333333" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/drawable-v24/ic_love_tab.xml" value="0.2598958333333333" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/drawable-v24/ic_note_tab.xml" value="0.2598958333333333" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/drawable/home_author_image_roundshape.xml" value="0.19791666666666666" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/drawable/ic_home.xml" value="0.10677083333333333" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/drawable/ic_home_tab.xml" value="0.2598958333333333" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/drawable/ic_love_tab.xml" value="0.2598958333333333" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/drawable/ic_note_tab.xml" value="0.2598958333333333" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/layout/activity_forgot_password.xml" value="0.2" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/layout/activity_siging.xml" value="0.2" />
         <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/layout/activity_signinig.xml" value="0.16530797101449277" />
         <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/layout/activity_signup.xml" value="0.176" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/layout/activity_varifaction.xml" value="0.1526268115942029" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/layout/fragment_add_folder_screen.xml" value="0.17028985507246377" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/layout/fragment_home_screen.xml" value="0.19661458333333334" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/layout/fragment_love_user.xml" value="0.264" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/layout/fragment_user_note_screen.xml" value="0.13903985507246377" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/layout/home_fragment.xml" value="0.13903985507246377" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/layout/home_fragment_list_of_item.xml" value="0.264" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/layout/love_fragment.xml" value="0.13903985507246377" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/layout/note_fragment.xml" value="0.13903985507246377" />
+        <entry key="..\:/Users/ZEN/AndroidStudioProjects/Reader/app/src/main/res/menu/menu_nav.xml" value="0.176" />
       </map>
     </option>
   </component>
