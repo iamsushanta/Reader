@@ -23,11 +23,12 @@ import java.util.*
 
 private const val TAG = "SignupActivity"
 
+private var USER_EMAIL = "email"
+
 @DelicateCoroutinesApi
 class SignupActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
 
-    // passwordless code
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,12 +39,14 @@ class SignupActivity : AppCompatActivity() {
         Signup_complete.setOnClickListener{
             if(Signup_email.text.isNotEmpty() && Signup_password.text.isNotEmpty()){
                 signUpEmailCheck(Signup_email.text.toString(),Signup_password.text.toString())
+                USER_EMAIL = Signup_email.text.toString()
                 Signup_email.visibility = View.GONE
                 Signup_password.visibility = View.GONE
                 Signup_app_name.visibility = View.GONE
                 Signup_complete.visibility = View.GONE
                 Signup_progressBar.visibility = View.VISIBLE
                 Signup_alert.visibility = View.GONE
+                Signup_loging.visibility = View.GONE
             }
         }
 
@@ -62,6 +65,7 @@ class SignupActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        Log.d(TAG,"onStart is called ")
         val currentUser = auth.currentUser
         updateUI(currentUser)
     }
@@ -90,6 +94,10 @@ class SignupActivity : AppCompatActivity() {
                     }
 
                 }
+            }.addOnFailureListener { task ->
+                Log.d(TAG,"some of issue")
+                Toast.makeText(baseContext,task.message,Toast.LENGTH_LONG).show()
+
             }
 
     }
@@ -98,7 +106,11 @@ class SignupActivity : AppCompatActivity() {
     private fun updateUI(firebaseUser: FirebaseUser?) {
         if(firebaseUser != null){
             Log.d(TAG,"firebase user not null")
-            val user = User(firebaseUser.uid,firebaseUser.displayName,firebaseUser.photoUrl.toString())
+            val user: User = if(USER_EMAIL == "email"){
+                User(firebaseUser.uid, firebaseUser.email.toString())
+            }else{
+                User(firebaseUser.uid, USER_EMAIL)
+            }
             val dao = UserDao()
             dao.addUser(user)
             val mainActivity = Intent(this,MainActivity::class.java)
@@ -113,6 +125,7 @@ class SignupActivity : AppCompatActivity() {
             Signup_complete.visibility = View.VISIBLE
             Signup_progressBar.visibility = View.GONE
             Signup_alert.visibility = View.VISIBLE
+            Signup_loging.visibility = View.VISIBLE
 
         }
     }

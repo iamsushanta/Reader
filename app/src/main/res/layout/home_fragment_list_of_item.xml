@@ -19,7 +19,7 @@
         app:srcCompat="@drawable/man" />
 
     <TextView
-        android:id="@+id/article_tile_link"
+        android:id="@+id/article_link"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -38,7 +38,7 @@
         android:layout_marginTop="8dp"
         android:text="Author Name"
         android:textColor="#AF0740"
-        app:layout_constraintEnd_toEndOf="@+id/article_tile_link"
-        app:layout_constraintStart_toStartOf="@+id/article_tile_link"
-        app:layout_constraintTop_toBottomOf="@+id/article_tile_link" />
+        app:layout_constraintEnd_toEndOf="@+id/article_link"
+        app:layout_constraintStart_toStartOf="@+id/article_link"
+        app:layout_constraintTop_toBottomOf="@+id/article_link" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,8 +9,10 @@
 
     <TextView
         android:id="@+id/love_fragment"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:text="Add Folder Screen"
         android:textColor="#43a047"
         android:textSize="40sp"
