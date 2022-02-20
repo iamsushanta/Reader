@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.Window
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import iamzen.`in`.reader.daos.UserDao
@@ -33,7 +35,10 @@ class SigningActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_siging)
-        actionBar?.setDisplayHomeAsUpEnabled(true);
+        actionBar?.setDisplayHomeAsUpEnabled(true)
+        val window: Window = this.window
+        window.statusBarColor = ContextCompat.getColor(this,R.color.white)
+
         mAuth = FirebaseAuth.getInstance()
 
         Signing_complete.setOnClickListener{

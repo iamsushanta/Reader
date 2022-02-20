@@ -1,10 +1,9 @@
 package iamzen.`in`.reader
 
 import android.os.Bundle
+import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -16,6 +15,8 @@ private const val ARG_PARAM2 = "param2"
  * Use the [LoveUser.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+private const val TAG = "LoveUser"
 class LoveUser : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -34,8 +35,18 @@ class LoveUser : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.love_fragment, container, false)
+        val inflate =  inflater.inflate(R.layout.love_fragment, container, false)
+        setHasOptionsMenu(true)
+        return inflate
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        Log.d(TAG,"onCreateOptionMenu is called $menu")
+        menu.clear()
+        inflater.inflate(R.menu.menu_nav,menu)
+    }
+
+
 
     companion object {
         /**

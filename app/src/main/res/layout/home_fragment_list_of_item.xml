@@ -34,11 +34,26 @@
         android:id="@+id/author_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:text="Author Name"
         android:textColor="#AF0740"
-        app:layout_constraintEnd_toEndOf="@+id/article_link"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/downLoadArticle"
         app:layout_constraintStart_toStartOf="@+id/article_link"
         app:layout_constraintTop_toBottomOf="@+id/article_link" />
+
+    <ImageView
+        android:id="@+id/downLoadArticle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/author_name"
+        app:layout_constraintEnd_toEndOf="@+id/article_link"
+        app:layout_constraintTop_toBottomOf="@+id/article_link"
+        app:srcCompat="@drawable/ic_read_download" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

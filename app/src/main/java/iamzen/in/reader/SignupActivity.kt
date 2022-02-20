@@ -7,7 +7,9 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.view.Window
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -34,7 +36,9 @@ class SignupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
         auth = FirebaseAuth.getInstance()
-
+        actionBar?.setDisplayHomeAsUpEnabled(true)
+        val window: Window = this.window
+        window.statusBarColor = ContextCompat.getColor(this,R.color.white)
 
         Signup_complete.setOnClickListener{
             if(Signup_email.text.isNotEmpty() && Signup_password.text.isNotEmpty()){
@@ -46,29 +50,16 @@ class SignupActivity : AppCompatActivity() {
                 Signup_complete.visibility = View.GONE
                 Signup_progressBar.visibility = View.VISIBLE
                 Signup_alert.visibility = View.GONE
-                Signup_loging.visibility = View.GONE
             }
         }
 
-        Signup_loging.setOnClickListener{
-            val intent = Intent(this,SigningActivity::class.java)
-            startActivity(intent)
-        }
+
 
 
 
 
     }
 
-
-
-
-    override fun onStart() {
-        super.onStart()
-        Log.d(TAG,"onStart is called ")
-        val currentUser = auth.currentUser
-        updateUI(currentUser)
-    }
 
     private fun signUpEmailCheck(email:String, password:String){
 
@@ -125,7 +116,6 @@ class SignupActivity : AppCompatActivity() {
             Signup_complete.visibility = View.VISIBLE
             Signup_progressBar.visibility = View.GONE
             Signup_alert.visibility = View.VISIBLE
-            Signup_loging.visibility = View.VISIBLE
 
         }
     }

@@ -18,9 +18,14 @@
     </style>
 
 
-    <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="ActionBar" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-
+        <item name="colorOnPrimary">@color/app_text_color</item>
+        <item name="colorPrimary">@color/navigationBackGroundColor</item>
     </style>
+
+
+
+
 </resources>

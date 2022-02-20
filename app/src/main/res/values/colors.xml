@@ -8,4 +8,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="navigationBackGroundColor">#B2E677</color>
+    <color name="app_text_color">#E91E63</color>
 </resources>

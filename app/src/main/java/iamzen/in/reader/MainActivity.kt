@@ -1,6 +1,8 @@
 package iamzen.`in`.reader
 
 import android.annotation.SuppressLint
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -9,6 +11,7 @@ import android.os.PersistableBundle
 import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
@@ -19,16 +22,24 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.coroutines.DelicateCoroutinesApi
 import java.util.concurrent.Executors
+import android.R.menu
+import android.graphics.Color
+import androidx.appcompat.app.ActionBar
+import androidx.core.view.MenuItemCompat
 
 
 private const val TAG = "MainActivity"
 
 @DelicateCoroutinesApi
-class MainActivity : AppCompatActivity() {
+class MainActivity() : AppCompatActivity() {
 
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var homeScreen:HomeScreen
+    private lateinit var loveScreen:LoveUser
+    private lateinit var noteScreen:UserNoteScreen
+    private lateinit var addFolderScreen:AddFolderScreen
 
-
+    private lateinit var actionBar: ActionBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -38,6 +49,9 @@ class MainActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         val window: Window = this.window
 
+       actionBar = supportActionBar!!
+
+        actionBar.title = "Home"
         window.statusBarColor = ContextCompat.getColor(this,R.color.navigationBackGroundColor)
 
         if (Intent.ACTION_SEND == action && type != null) {
@@ -47,40 +61,40 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
-        val  homeScreen = HomeScreen()
-        val loveScreen = LoveUser()
-        val noteScreen = UserNoteScreen()
-        val addFolderScreen = AddFolderScreen()
+        homeScreen = HomeScreen()
+         loveScreen = LoveUser()
+         noteScreen = UserNoteScreen()
+         addFolderScreen = AddFolderScreen()
 
 
         setCurrentFragment(homeScreen)
-
-
-
-
-
 
 
         navigation.setOnNavigationItemSelectedListener{ menuItem ->
             Log.d(TAG, "bottomNavigationView is clicked")
             when (menuItem.itemId) {
                 R.id.nav_home -> {
+                    actionBar.title = "Home"
                     Log.d(TAG, "bottomNavigationView is clicked home button")
                     setCurrentFragment(homeScreen)
 
                 }
                 R.id.nav_love -> {
+
+                    actionBar.title = "Love"
+                    Log.d(TAG,"love screen is come action bar is $actionBar")
                     Log.d(TAG, "bottomNavigationView is clicked love button")
                     setCurrentFragment(loveScreen)
 
                 }
 
                 R.id.nav_note -> {
+                    actionBar.title = "Note"
                     Log.d(TAG, "bottomNavigationView is clicked note button ")
                     setCurrentFragment(noteScreen)
                 }
                 R.id.nav_addFolder -> {
+                    actionBar.title = "Add Folder"
                     Log.d(TAG,"BottomNavigationView is clicked addFolder screen open")
                     setCurrentFragment(addFolderScreen)
                 }
@@ -93,7 +107,59 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        Log.d(TAG, "onCreate Option menu is called")
+        menuInflater.inflate(R.menu.top_app_bar,menu)
+        val searItem:MenuItem = menu.findItem(R.id.Search)
+//        val searchView:SearchView = MenuItemCompat.getActionView(searItem) as SearchView
 
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView = menu.findItem(R.id.Search).actionView as SearchView
+        val searchableInfo = searchManager.getSearchableInfo(componentName)
+        searchView.setSearchableInfo(searchableInfo)
+
+        searchView.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+
+                if (query != null) {
+                    homeScreen.searchingUser(query)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                Log.d(TAG,"onQueryTextChange is called")
+                if(newText != null){
+                    homeScreen.searchingUser(newText)
+                }
+                return true
+            }
+
+        })
+
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        Log.d(TAG,"hello option Item Selected is called")
+        when(item.itemId){
+
+            R.id.Setting -> {
+                Log.d(TAG,"hello Setting item is clicked")
+                return true
+            }
+            R.id.nav_home ->{
+                Log.d(TAG,"hello Home menu is tab")
+                return true
+            }
+            else ->{
+               return super.onOptionsItemSelected(item)
+            }
+        }
+
+    }
 
     private fun setCurrentFragment(fragment: Fragment)=
         supportFragmentManager.beginTransaction().apply {
@@ -108,12 +174,9 @@ class MainActivity : AppCompatActivity() {
             // Update UI to reflect text being shared
             Log.d(TAG,"url is $sharedText")
             doMyTask(sharedText)
-
-
-
+            val text = sharedText.toString().replace("https://","")
             val currentUser = mAuth.currentUser
-            addLink(currentUser,sharedText)
-
+            addLink(currentUser,text)
             finish()
 
         }
@@ -158,5 +221,7 @@ class MainActivity : AppCompatActivity() {
 
 
 }
+
+
 
 
