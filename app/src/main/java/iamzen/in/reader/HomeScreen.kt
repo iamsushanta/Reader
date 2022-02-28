@@ -1,28 +1,21 @@
 package iamzen.`in`.reader
 
-import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
-import android.media.MediaCodec
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.ktx.Firebase
 import iamzen.`in`.reader.daos.UserArticleSave
 import iamzen.`in`.reader.model.UserAddLink
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.coroutines.DelicateCoroutinesApi
-import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,7 +47,6 @@ class HomeScreen (): Fragment(), ItemClick {
 
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -77,21 +69,16 @@ class HomeScreen (): Fragment(), ItemClick {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG,"onViewCreated is start")
+
         mUserAddDao = mAuth.uid?.let { UserArticleSave(it) }!!
         val postCollection = mUserAddDao.userCollection
         val query = postCollection.orderBy("articleLink",Query.Direction.DESCENDING)
-        postCollection.orderBy("articleLink",Query.Direction.DESCENDING)
-//        val query2 = postCollection.whereGreaterThanOrEqualTo("articleLink","")
-//        val mutableList: MutableList<String> = mutableListOf("https://jamesclear.com/3-2-1/january-20-2022")
-//        val query3 = postCollection.whereIn("articleLink",mutableList)
 
-//        val reference = FirebaseDatabase.getInstance().getReference("userArticleSave")
-//        val query3 = reference.child("yourArticleSave").orderByChild("articleLink").orderByValue()
-        val query2 = postCollection.orderBy("articleLink").startAfter("gd")
         Log.d(TAG, postCollection.toString())
-        val option = FirestoreRecyclerOptions.Builder<UserAddLink>().setQuery(query2, UserAddLink::class.java).build()
+        val option = FirestoreRecyclerOptions.Builder<UserAddLink>().setQuery(query, UserAddLink::class.java).build()
          mHomeAdapter = HomeAdapter(option,this)
         createRecyclerView()
+
     }
 
     companion object {
@@ -138,10 +125,11 @@ class HomeScreen (): Fragment(), ItemClick {
 
     }
 
-    override fun itemClick(uid: String, url:String) {
-        Log.d(TAG,"item Click is called $uid url is $url")
+    override fun itemClick(itemId: String, url:String) {
+        Log.d(TAG,"item Click is called $itemId url is $url")
         val intent = Intent(requireContext(),ReadActivity::class.java)
         intent.putExtra(ARTICLE_LINK_READ,url)
+        intent.putExtra(ARTICLE_LINK_ID,itemId)
         startActivity(intent)
     }
 
@@ -152,6 +140,8 @@ class HomeScreen (): Fragment(), ItemClick {
         mHomeAdapter.updateOptions(option)
 
     }
+
+
 
 
 }

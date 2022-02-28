@@ -1,21 +1,26 @@
 package iamzen.`in`.reader.daos
 
+import android.content.Context
+import android.os.Environment
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 import iamzen.`in`.reader.model.UserAddLink
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-
-import com.google.firebase.firestore.*
-
-import com.google.firebase.firestore.DocumentSnapshot
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import java.io.File
+import java.io.OutputStreamWriter
 
 
 private val TAG = "UserArticleSave"
 @DelicateCoroutinesApi
-class UserArticleSave (UserID:String){
+class UserArticleSave (var UserID:String){
 
 
 
@@ -37,11 +42,11 @@ class UserArticleSave (UserID:String){
 
 
 
-    fun addUserLink(webSiteLink:String , userAddLink:UserAddLink?):Boolean{
+    fun addUserLink(webSiteLink:String ,userId:String,context:Context):Boolean{
         GlobalScope.launch(Dispatchers.IO){
             // start this line
-            val user = userAddLink?.let { db.collection("userArticleSave").document(it.uid).collection("yourArticleSave") }
-            user?.get()?.addOnCompleteListener { task ->
+            val user =  db.collection("userArticleSave").document(userId).collection("yourArticleSave")
+            user.get().addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val doc = task.result
                     val value = doc.documents
@@ -56,27 +61,72 @@ class UserArticleSave (UserID:String){
                     }
 
                     if(checkUserUrlHave){
-                        Log.d(TAG,"creckUserUrl Have is $checkUserUrlHave")
-                        userArticleSave(userAddLink)
+                        Log.d(TAG,"checkUserUrl Have is $checkUserUrlHave")
+                        readUrl(webSiteLink,context,true)
+
                         return@addOnCompleteListener
-                    }
-                    else if(value.size == 0 ){
+                    } else if(value.size == 0 ){
                         Log.d(TAG,"value size is 0")
-                        userArticleSave(userAddLink)
+                        readUrl(webSiteLink,context,true)
                         return@addOnCompleteListener
-                    }
-                    else{
+                    } else{
                         Log.d(TAG,"Your url is already have")
                         return@addOnCompleteListener
                     }
 
 
                 }
-            }?.addOnFailureListener {
+            }.addOnFailureListener {
                 Log.d(TAG, "exception is called")
             }
         }
         return false
+    }
+
+
+
+    private fun readUrl(userSaveUrl:String,context: Context,check:Boolean = false) {
+
+        GlobalScope.launch(Dispatchers.IO) {
+
+
+            try {
+                if(check) {
+
+
+                    val htmlData: Document = Jsoup.connect(userSaveUrl).get()
+                    val file = File(
+                        Environment.getExternalStorageDirectory()
+                            .toString() + "/" + File.separator + "reader.html"
+                    )
+
+                    file.createNewFile()
+                    if (file.exists()) {
+                        Log.d(TAG, "file is exists..")
+                        val outputStreamWriter = OutputStreamWriter(
+                            context.openFileOutput(
+                                file.name,
+                                AppCompatActivity.MODE_PRIVATE
+                            )
+                        )
+//                    for(item in htmlData.allElements){
+//                       file.appendText("\n${item}")
+//                    }
+
+
+                        Log.d(TAG, "file $file ")
+//                    Log.d(TAG,"outputStreamWriter is add data ${getData[0]}")
+
+                        outputStreamWriter.close()
+                    }
+                }
+
+
+            } catch(e: Exception){
+                Log.d(TAG,"error throw ${e.printStackTrace()}")
+            }
+        }
+
     }
 
 

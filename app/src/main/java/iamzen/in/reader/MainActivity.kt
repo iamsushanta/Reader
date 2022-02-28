@@ -1,31 +1,30 @@
 package iamzen.`in`.reader
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.PersistableBundle
 import android.util.Log
-import android.view.*
+import android.view.Menu
+import android.view.MenuItem
+import android.view.Window
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import iamzen.`in`.reader.daos.UserArticleSave
-import iamzen.`in`.reader.model.UserAddLink
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.coroutines.DelicateCoroutinesApi
 import java.util.concurrent.Executors
-import android.R.menu
-import android.graphics.Color
-import androidx.appcompat.app.ActionBar
-import androidx.core.view.MenuItemCompat
 
 
 private const val TAG = "MainActivity"
@@ -38,6 +37,13 @@ class MainActivity() : AppCompatActivity() {
     private lateinit var loveScreen:LoveUser
     private lateinit var noteScreen:UserNoteScreen
     private lateinit var addFolderScreen:AddFolderScreen
+
+    var PERMISSION_ALL = 1
+    var PERMISSIONS = arrayOf(
+        Manifest.permission.READ_CONTACTS,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+
+        )
 
     private lateinit var actionBar: ActionBar
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +64,10 @@ class MainActivity() : AppCompatActivity() {
             if ("text/plain" == type) {
                 handleSendText(intent) // Handle text being sent
             }
+        }
+
+        if (!hasPermissions(this, *PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         }
 
 
@@ -174,9 +184,8 @@ class MainActivity() : AppCompatActivity() {
             // Update UI to reflect text being shared
             Log.d(TAG,"url is $sharedText")
             doMyTask(sharedText)
-            val text = sharedText.toString().replace("https://","")
             val currentUser = mAuth.currentUser
-            addLink(currentUser,text)
+            addLink(currentUser,sharedText)
             finish()
 
         }
@@ -187,11 +196,11 @@ class MainActivity() : AppCompatActivity() {
         if(firebaseUser != null){
             Log.d(TAG, "addLink is called firebase user is not null")
 
-            val userArticle = UserAddLink(firebaseUser.uid,"","",userLink)
+//            val userArticle = UserAddLink(firebaseUser.uid,"","",userLink)
             val userArticleSave = UserArticleSave(firebaseUser.uid)
 
             Log.d(TAG,"userArticle Save is start and AddUserLink is tab ")
-            userArticleSave.addUserLink(userLink,userArticle)
+            userArticleSave.addUserLink(userLink,firebaseUser.uid,this)
         }
 
     }
@@ -216,6 +225,11 @@ class MainActivity() : AppCompatActivity() {
 //            }
 //        }
     }
+
+    fun hasPermissions(context: Context, vararg permissions:String): Boolean = permissions.all {
+        ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+    }
+
 
 
 

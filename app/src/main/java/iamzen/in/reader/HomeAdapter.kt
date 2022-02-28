@@ -46,5 +46,5 @@ class HomeAdapter(userAdd:FirestoreRecyclerOptions<UserAddLink>,val listener:Ite
 }
 
 interface ItemClick{
-    fun itemClick(uid:String,url:String)
+    fun itemClick(itemId:String,url:String)
 }
