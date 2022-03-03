@@ -18,6 +18,8 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 
 
+
+//
 const val ARTICLE_LINK_READ = "articleLinkRead"
 const val ARTICLE_LINK_ID = "articleLinkId"
 private const val TAG = "ReadActivity"

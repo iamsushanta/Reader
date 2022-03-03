@@ -8,19 +8,21 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import iamzen.`in`.reader.model.UserAddLink
+import com.bumptech.glide.Glide
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import iamzen.`in`.reader.model.UserAddLink
 
 
 
 class HomeViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     val webSiteUrl: TextView = itemView.findViewById(R.id.article_link)
     val downLoadArticle: ImageView = itemView.findViewById(R.id.downLoadArticle)
+    val authorImage:ImageView = itemView.findViewById(R.id.author_image)
 }
 
 private const val TAG = "HomeAdapter"
-class HomeAdapter(userAdd:FirestoreRecyclerOptions<UserAddLink>,val listener:ItemClick):FirestoreRecyclerAdapter<UserAddLink,HomeViewHolder> (userAdd){
+class HomeAdapter(userAdd:FirestoreRecyclerOptions<UserAddLink>, private val listener:ItemClick):FirestoreRecyclerAdapter<UserAddLink,HomeViewHolder> (userAdd){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
         Log.d(TAG,"onCreateViewHolder is called")
@@ -42,6 +44,11 @@ class HomeAdapter(userAdd:FirestoreRecyclerOptions<UserAddLink>,val listener:Ite
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int, model: UserAddLink) {
         Log.d(TAG,"onBindViewHolder called")
         holder.webSiteUrl.text = "https://${model.articleLink}"
+
+        Glide.with(holder.itemView.context)
+            .load(model.authorImage)
+            .error(R.drawable.man)
+            .into(holder.authorImage);
     }
 }
 

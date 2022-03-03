@@ -1,9 +1,7 @@
 package iamzen.`in`.reader.daos
 
 import android.content.Context
-import android.os.Environment
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -14,8 +12,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import java.io.File
-import java.io.OutputStreamWriter
 
 
 private val TAG = "UserArticleSave"
@@ -62,12 +58,12 @@ class UserArticleSave (var UserID:String){
 
                     if(checkUserUrlHave){
                         Log.d(TAG,"checkUserUrl Have is $checkUserUrlHave")
-                        readUrl(webSiteLink,context,true)
+                        readUrl(webSiteLink,userId,true)
 
                         return@addOnCompleteListener
                     } else if(value.size == 0 ){
                         Log.d(TAG,"value size is 0")
-                        readUrl(webSiteLink,context,true)
+                        readUrl(webSiteLink,userId,true)
                         return@addOnCompleteListener
                     } else{
                         Log.d(TAG,"Your url is already have")
@@ -85,7 +81,7 @@ class UserArticleSave (var UserID:String){
 
 
 
-    private fun readUrl(userSaveUrl:String,context: Context,check:Boolean = false) {
+    private fun readUrl(userSaveUrl:String,userId:String,check:Boolean = false) {
 
         GlobalScope.launch(Dispatchers.IO) {
 
@@ -93,35 +89,56 @@ class UserArticleSave (var UserID:String){
             try {
                 if(check) {
 
-
                     val htmlData: Document = Jsoup.connect(userSaveUrl).get()
-                    val file = File(
-                        Environment.getExternalStorageDirectory()
-                            .toString() + "/" + File.separator + "reader.html"
-                    )
-
-                    file.createNewFile()
-                    if (file.exists()) {
-                        Log.d(TAG, "file is exists..")
-                        val outputStreamWriter = OutputStreamWriter(
-                            context.openFileOutput(
-                                file.name,
-                                AppCompatActivity.MODE_PRIVATE
-                            )
-                        )
-//                    for(item in htmlData.allElements){
-//                       file.appendText("\n${item}")
-//                    }
+                    val cleanData = htmlData.select("title,p,h1,h2,h3,h4,h5,h6,link[rel*=icon]")
 
 
-                        Log.d(TAG, "file $file ")
-//                    Log.d(TAG,"outputStreamWriter is add data ${getData[0]}")
+                    val userAddLink = UserAddLink(userId)
+                    userAddLink.articleLink = userSaveUrl
+                    var linkUnderGo = true
+                    for(item in cleanData){
+//                        Log.d(TAG,"item is show ${item.tag()} is ${item}")
+                        when(item.tag().toString()){
+                            "link" -> {
+                                if(linkUnderGo){
+                                    Log.d(TAG,"icon is ${item.tag()}, ${item.attr("href")} ${(item.attr("sizes") == "32×32")}")
+                                    userAddLink.authorImage = item.attr("href")
+                                    linkUnderGo = false
+                                }
 
-                        outputStreamWriter.close()
+                            }
+                            "title" -> {
+                                userAddLink.authorName = item.text()
+                            }
+                            "p" -> {
+                                userAddLink.userUrlData = mapOf("p" to item.toString())
+
+                            }
+                            "h1" -> {
+                                userAddLink.userUrlData = mapOf("h1" to item.toString() )
+                            }
+                            "h2" -> {
+                                userAddLink.userUrlData = mapOf("h2" to item.toString() )
+                            }
+                            "h3" -> {
+                                userAddLink.userUrlData = mapOf("h3" to item.toString())
+                            }
+                            "h4" -> {
+                                userAddLink.userUrlData = mapOf("h4" to item.toString())
+
+                            }
+                            "h5" -> {
+                                userAddLink.userUrlData = mapOf("h5" to item.toString())
+                            }
+                            "h6"->{
+                                userAddLink.userUrlData = mapOf("h6" to item.toString())
+                            }
+                        }
+
                     }
+                    userArticleSave(userAddLink)
+
                 }
-
-
             } catch(e: Exception){
                 Log.d(TAG,"error throw ${e.printStackTrace()}")
             }
