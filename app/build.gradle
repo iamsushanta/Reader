@@ -58,7 +58,7 @@ dependencies {
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:29.0.4')
     implementation 'com.google.firebase:firebase-database:20.0.3'
-    implementation 'com.google.firebase:firebase-analytics:20.0.2'
+    implementation 'com.google.firebase:firebase-analytics:20.1.0'
     implementation 'com.firebaseui:firebase-ui-firestore:6.4.0'
 
 
@@ -83,7 +83,10 @@ dependencies {
     // jsoup libary add
     implementation 'org.jsoup:jsoup:1.14.3'
 
+    // Glide libary add
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
 
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
 
 

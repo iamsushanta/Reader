@@ -18,7 +18,6 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 
 
-const val ARTICLE_LINK_READ = "articleLinkRead"
 const val ARTICLE_LINK_ID = "articleLinkId"
 private const val TAG = "ReadActivity"
 
@@ -43,7 +42,6 @@ class ReadActivity : AppCompatActivity(), View.OnTouchListener {
 
         scrollView.setOnTouchListener(this)
 
-        val url = intent.getStringExtra(ARTICLE_LINK_READ)!!
         val urlId = intent.getStringExtra(ARTICLE_LINK_ID)!!
 
 
@@ -55,12 +53,12 @@ class ReadActivity : AppCompatActivity(), View.OnTouchListener {
             userLikeWork(urlId,checkIsLikeArticle)
         } // readLove is end
 
-        if (url != null) {
             Log.d(TAG,"url is not null")
             articleShow.settings.javaScriptEnabled = true
+            mReadDao.showUserImage(urlId,articleShow)
 
 //            articleShow.loadUrl(url)
-        }
+
 
         scrollView.viewTreeObserver.addOnScrollChangedListener {
 

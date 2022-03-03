@@ -46,6 +46,7 @@ class MainActivity() : AppCompatActivity() {
         )
 
     private lateinit var actionBar: ActionBar
+    @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -58,6 +59,7 @@ class MainActivity() : AppCompatActivity() {
        actionBar = supportActionBar!!
 
         actionBar.title = "Home"
+        window.navigationBarColor = ContextCompat.getColor(this,R.color.navigationBackGroundColor)
         window.statusBarColor = ContextCompat.getColor(this,R.color.navigationBackGroundColor)
 
         if (Intent.ACTION_SEND == action && type != null) {
@@ -120,8 +122,7 @@ class MainActivity() : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         Log.d(TAG, "onCreate Option menu is called")
         menuInflater.inflate(R.menu.top_app_bar,menu)
-        val searItem:MenuItem = menu.findItem(R.id.Search)
-//        val searchView:SearchView = MenuItemCompat.getActionView(searItem) as SearchView
+
 
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         val searchView = menu.findItem(R.id.Search).actionView as SearchView

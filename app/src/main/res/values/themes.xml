@@ -23,6 +23,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="colorOnPrimary">@color/app_text_color</item>
         <item name="colorPrimary">@color/navigationBackGroundColor</item>
+        <item name="titleTextColor">@color/app_text_color</item>
     </style>
 
 

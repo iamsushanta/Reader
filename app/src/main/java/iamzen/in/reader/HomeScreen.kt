@@ -1,21 +1,25 @@
 package iamzen.`in`.reader
 
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Query
+import iamzen.`in`.reader.daos.ReadDao
 import iamzen.`in`.reader.daos.UserArticleSave
 import iamzen.`in`.reader.model.UserAddLink
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,10 +45,13 @@ class HomeScreen (): Fragment(), ItemClick {
 //    mUserAddDao = UserArticleSave()
     private lateinit var mHomeAdapter:HomeAdapter
 
+    private lateinit var mUserReadDao: ReadDao
     private lateinit var mUserAddDao:UserArticleSave
     private lateinit var mAuth: FirebaseAuth
 
-
+    var pageHeight = 1120
+    var pagewidth = 792
+    var bmp: Bitmap? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +62,7 @@ class HomeScreen (): Fragment(), ItemClick {
         }
         mAuth = FirebaseAuth.getInstance()
 
+        bmp = BitmapFactory.decodeResource(resources, R.drawable.man);
 
     }
 
@@ -70,6 +78,7 @@ class HomeScreen (): Fragment(), ItemClick {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG,"onViewCreated is start")
 
+        mUserReadDao = ReadDao(mAuth.uid!!)
         mUserAddDao = mAuth.uid?.let { UserArticleSave(it) }!!
         val postCollection = mUserAddDao.userCollection
         val query = postCollection.orderBy("articleLink",Query.Direction.DESCENDING)
@@ -128,9 +137,58 @@ class HomeScreen (): Fragment(), ItemClick {
     override fun itemClick(itemId: String, url:String) {
         Log.d(TAG,"item Click is called $itemId url is $url")
         val intent = Intent(requireContext(),ReadActivity::class.java)
-        intent.putExtra(ARTICLE_LINK_READ,url)
         intent.putExtra(ARTICLE_LINK_ID,itemId)
         startActivity(intent)
+    }
+
+    override fun downLoadArticle(itemId: String) {
+        GlobalScope.launch(Dispatchers.IO) {
+//            val user = mUserReadDao.getUserId(itemId).await().toObject(UserAddLink::class.java)
+//            val userTitle = user?.authorName?.replace(" ", "")
+//
+//            val pdfDocument = PdfDocument()
+//
+//            val title = Paint()
+//
+//            val mypageInfo = PageInfo.Builder(pagewidth, pageHeight, 10).create()
+//
+//            val myPage = pdfDocument.startPage(mypageInfo)
+//            val canvas: Canvas = myPage.canvas
+//
+//
+//            title.typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL);
+//            title.textSize = 28F;
+////
+//            title.color = ContextCompat.getColor(requireContext(), R.color.black);
+//
+//            canvas.drawText("A portal for IT professionals.", 50f, 50f, title);
+//            canvas.drawText("Geeks for Geeks", 50f, 80f, title);
+//
+//            var itemCount = 50f
+//            var itemCount2 = 80f
+//
+//            for (item in user?.userUrlData!!){
+//                canvas.drawText("\n$item",itemCount,itemCount2,title)
+//                itemCount2 += 20f
+//            }
+////            title.typeface = Typeface.defaultFromStyle(Typeface.NORMAL);
+////            title.color = ContextCompat.getColor(requireContext(), R.color.purple_200);
+////            title.textSize = 15f;
+////
+////            title.textAlign = Paint.Align.CENTER;
+////            canvas.drawText("This is sample document which we have created.", 396f, 560f, title);
+//
+//            pdfDocument.finishPage(myPage)
+//
+//            var file = File(Environment.getExternalStorageDirectory(),"$userTitle.pdf")
+//            try{
+//                pdfDocument.writeTo(FileOutputStream(file))
+//                Log.d(TAG,"download is complete")
+//            } catch(e: Exception){
+//                Log.d(TAG,"error throw download ${e.printStackTrace()}")
+//            }
+//            pdfDocument.close()
+        }
     }
 
     fun searchingUser(query:String){
